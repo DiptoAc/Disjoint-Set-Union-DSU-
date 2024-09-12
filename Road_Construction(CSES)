@@ -1,0 +1,64 @@
+https://cses.fi/problemset/task/1676
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace std;
+using namespace __gnu_pbds;
+using namespace __gnu_cxx;
+template <typename T>
+using oset = tree<T, null_type, less<T>,rb_tree_tag, tree_order_statistics_node_update>;
+#define ll long long
+#define int long long
+#define fast ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define pb push_back
+#define ok cout<<"ok"<<endl<<flush;
+#define endl '\n'
+#define LLONG_MAX 1e16
+const ll M =1e9+7;
+const ll N =2e5+1;
+void debug(vector<ll>&v){for(auto it:v){cout<<it<<" ";}cout<<endl;}
+ll n,m=0;
+vector<ll>par(N),sz(N);
+void make(ll i)
+{
+    par[i]=i;
+    sz[i]++;
+}
+
+ll Find(ll x)
+{
+    if(par[x]==x){return x;}
+    return par[x]=Find(par[x]);
+}
+void mrg(ll x,ll y)
+{
+    x=Find(x);
+    y=Find(y);
+    if(x==y){return;}
+    if(sz[x]<sz[y]){swap(x,y);}
+    sz[x]+=sz[y];
+    par[y]=x;
+}
+int32_t main()
+{
+    fast
+    ll i,j=1,k=1,p,q,tc=1,cs=0;//cin>>tc;
+    while(tc--)
+    {
+        cin>>n>>m;
+        for(i=1;i<=n;i++){make(i);}
+        ll cmp=n,lrg=1;
+        while(m--)
+        {
+            ll x,y;
+            cin>>x>>y;
+            x=Find(x);
+            y=Find(y);
+            mrg(x,y);
+            if(x!=y){cmp--;lrg=max({lrg,sz[x],sz[y]});}
+            cout<<cmp<<" "<<lrg<<endl;
+        }
+        //for(i=1;i<=n;i++){cout<<par[i]<<" "<<sz[i]<<endl;}
+    }
+}
+//Classic and Basic DSU problem.
